@@ -1,0 +1,363 @@
+@import 'tailwindcss';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+/* Paper-and-ink palette. The canvas renderer reads these variables too. */
+:root {
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #f3f1eb;
+  --ink: #1d1c19;
+  --ink-soft: #55534d;
+  --ink-muted: #8d8a81;
+  --line: #e6e3dc;
+  --line-strong: #cfcbc1;
+  --header-bg: #f4f2ec;
+  --header-active: #e3ebe6;
+  --green: #0f6b4f;
+  --green-strong: #0b523d;
+  --green-tint: rgba(15, 107, 79, 0.08);
+  --green-flash: rgba(15, 107, 79, 0.22);
+  --green-soft: #d8e8e0;
+  --amber: #b45309;
+  --amber-soft: #fdf1df;
+  --error: #b42318;
+  --error-soft: #fbe9e6;
+  --ref-blue: #2563eb;
+  --ref-orange: #e0761a;
+  --ref-purple: #7c3aed;
+  --ref-teal: #0d9488;
+  --ref-rose: #db2777;
+  --shadow: 0 1px 2px rgba(29, 28, 25, 0.06), 0 8px 24px rgba(29, 28, 25, 0.08);
+  --focus-ring: 0 0 0 2px var(--paper), 0 0 0 4px var(--green);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #17191b;
+    --surface: #1e2124;
+    --surface-2: #24282c;
+    --ink: #e9e6df;
+    --ink-soft: #b3afa6;
+    --ink-muted: #7f7c74;
+    --line: #2b2f33;
+    --line-strong: #3a3f45;
+    --header-bg: #1c1f22;
+    --header-active: #1f3a31;
+    --green: #3fae87;
+    --green-strong: #62c39f;
+    --green-tint: rgba(63, 174, 135, 0.14);
+    --green-flash: rgba(63, 174, 135, 0.3);
+    --green-soft: #1f3a31;
+    --amber: #f0a04b;
+    --amber-soft: #3a2a14;
+    --error: #f0776a;
+    --error-soft: #3b1f1c;
+    --ref-blue: #60a5fa;
+    --ref-orange: #f5a35a;
+    --ref-purple: #a78bfa;
+    --ref-teal: #2dd4bf;
+    --ref-rose: #f472b6;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-green: var(--green);
+  --color-green-strong: var(--green-strong);
+  --color-green-tint: var(--green-tint);
+  --color-green-soft: var(--green-soft);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-error: var(--error);
+  --color-error-soft: var(--error-soft);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: 'tnum' 1, 'cv11' 1;
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 4px;
+}
+
+/* Toolbar buttons */
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 8px;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  border: 1px solid transparent;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+  white-space: nowrap;
+  user-select: none;
+}
+.tb-btn:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.tb-btn:active:not(:disabled) {
+  background: var(--line);
+}
+.tb-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.tb-btn[aria-pressed='true'] {
+  background: var(--green-tint);
+  color: var(--green);
+  border-color: color-mix(in srgb, var(--green) 35%, transparent);
+}
+.tb-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--line);
+  margin: 0 4px;
+  flex: none;
+}
+
+/* Syntax-coloured input: transparent text over a mirror layer */
+.colored-input {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 24px;
+}
+.colored-input .mirror,
+.colored-input input {
+  padding: 0 8px;
+  white-space: pre;
+  overflow: hidden;
+  letter-spacing: 0;
+  tab-size: 4;
+}
+.colored-input .mirror {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--ink);
+}
+.colored-input input {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  color: transparent;
+  caret-color: var(--ink);
+  outline: none;
+  box-shadow: none;
+}
+.colored-input input::selection {
+  background: color-mix(in srgb, var(--green) 25%, transparent);
+  color: transparent;
+}
+.colored-input input::placeholder {
+  color: var(--ink-muted);
+}
+.tok-ref-0 {
+  color: var(--ref-blue);
+}
+.tok-ref-1 {
+  color: var(--ref-orange);
+}
+.tok-ref-2 {
+  color: var(--ref-purple);
+}
+.tok-ref-3 {
+  color: var(--ref-teal);
+}
+.tok-ref-4 {
+  color: var(--ref-rose);
+}
+.tok-fn {
+  color: var(--green);
+  font-weight: 500;
+}
+.tok-num {
+  color: var(--ink);
+}
+.tok-str {
+  color: var(--amber);
+}
+.tok-op {
+  color: var(--ink-soft);
+}
+.tok-err {
+  color: var(--error);
+}
+
+/* Grid */
+.grid-root {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper);
+  contain: strict;
+}
+.grid-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.grid-scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  cursor: cell;
+  outline: none;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.grid-scroller:focus-visible {
+  box-shadow: none;
+}
+.grid-scroller.resize-col {
+  cursor: col-resize;
+}
+.grid-scroller.resize-row {
+  cursor: row-resize;
+}
+.grid-scroller.fill {
+  cursor: crosshair;
+}
+.grid-scroller.pointer {
+  cursor: default;
+}
+.grid-editor {
+  position: absolute;
+  z-index: 3;
+  background: var(--surface);
+  border: 2px solid var(--green);
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+}
+.grid-editor input {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 0 5px;
+}
+.grid-editor .mirror {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 0 5px;
+}
+.grid-editor.formula input,
+.grid-editor.formula .mirror {
+  font-family: var(--font-mono);
+}
+
+/* Panels */
+.panel-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.badge-high {
+  background: var(--green-soft);
+  color: var(--green-strong);
+}
+.badge-medium {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.badge-low {
+  background: var(--error-soft);
+  color: var(--error);
+}
+
+.toast-enter {
+  animation: toast-in 160ms ease-out;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 180ms ease-out;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
