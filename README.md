@@ -1,12 +1,34 @@
-# tabula-sheets
+# Tabula Sheets
 
-Portfolio project (in progress).
+A from-scratch browser spreadsheet.
 
-Spreadsheet / tabular experiment that still has the default Vite React scaffold in places. The interesting work is the sheets side, not the boilerplate.
+## Features
 
-## Status
+- Formula engine with tokenizer, parser, dependency graph, and evaluator
+- Functions: math, stats, text, logic, lookup, dates
+- Canvas grid with virtualized rendering
+- Smart-fill, CSV import/export, formatting, undo-friendly command layer
+- Local persistence and sample workbooks
 
-In progress. README will get more specific as the core settles.
+## Run
+
+```bash
+npm install
+npm run dev
+```
+
+```bash
+npm test
+```
+
+## Layout
+
+| Path | Role |
+|------|------|
+| `src/engine/` | Sheet model, formulas, graph, smart-fill |
+| `src/grid/` | Layout, renderer, interaction controller |
+| `src/components/` | Toolbar, formula bar, drawers |
+| `src/state/` | Store, actions, persistence |
 
 ## License
 
